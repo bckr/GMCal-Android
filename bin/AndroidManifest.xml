@@ -16,7 +16,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.nils.becker.fhplaner.ScheduleListView"
+            android:name=".controller.ScheduleListViewActivity"
             android:label="@string/Wochenansicht" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.nils.becker.fhplaner.ClassDetailActivity"
+            android:name=".controller.ClassDetailActivity"
             android:label="@string/Detailansicht" >
         </activity>
     </application>

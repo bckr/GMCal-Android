@@ -1,8 +1,6 @@
-package com.nils.becker.fhplaner;
+package com.nils.becker.fhplaner.settings;
 
-import android.app.ActionBar;
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 public class SettingsActivity extends Activity {

@@ -1,4 +1,4 @@
-package com.nils.becker.fhplaner;
+package com.nils.becker.fhplaner.controller;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -18,7 +18,14 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-public class ScheduleListView extends Activity implements ScheduleFetcher, SharedPreferences.OnSharedPreferenceChangeListener{
+import com.nils.becker.fhplaner.helper.CourseAdapter;
+import com.nils.becker.fhplaner.helper.FetchScheduleTask;
+import com.nils.becker.fhplaner.R;
+import com.nils.becker.fhplaner.helper.ScheduleFetcher;
+import com.nils.becker.fhplaner.model.Course;
+import com.nils.becker.fhplaner.settings.SettingsActivity;
+
+public class ScheduleListViewActivity extends Activity implements ScheduleFetcher, SharedPreferences.OnSharedPreferenceChangeListener {
 
 	private ArrayList<Course> list = new ArrayList<Course>();
 	private CourseAdapter adapter;
@@ -35,9 +42,16 @@ public class ScheduleListView extends Activity implements ScheduleFetcher, Share
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-        System.out.println("--> onCreate");
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_schedule_list);
+        setContentView(R.layout.activity_schedule_list);
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.edit().clear().commit();
+
+        if (isFirstStartup()) {
+            Intent switchToSettingsActivity = new Intent(ScheduleListViewActivity.this, SettingsActivity.class);
+            startActivity(switchToSettingsActivity);
+        }
 
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
@@ -53,7 +67,7 @@ public class ScheduleListView extends Activity implements ScheduleFetcher, Share
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				Intent showNextActivityIntent = new Intent(ScheduleListView.this, ClassDetailActivity.class);
+				Intent showNextActivityIntent = new Intent(ScheduleListViewActivity.this, ClassDetailActivity.class);
 				Course selectedCourse = adapter.getItem(arg2);
 				showNextActivityIntent.putExtra("selectedCourse", selectedCourse);
 				startActivity(showNextActivityIntent);
@@ -62,6 +76,11 @@ public class ScheduleListView extends Activity implements ScheduleFetcher, Share
 		});
 
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
+    }
+
+    private Boolean isFirstStartup() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        return sharedPreferences.getString("ressourceURL", "").equals("");
     }
 
     @Override
@@ -75,7 +94,7 @@ public class ScheduleListView extends Activity implements ScheduleFetcher, Share
                 break;
             case R.id.action_settings:
                 System.out.println("settings");
-                Intent showNextActivityIntent = new Intent(ScheduleListView.this, SettingsActivity.class);
+                Intent showNextActivityIntent = new Intent(ScheduleListViewActivity.this, SettingsActivity.class);
                 startActivity(showNextActivityIntent);
                 break;
         }

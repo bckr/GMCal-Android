@@ -1,10 +1,13 @@
-package com.nils.becker.fhplaner;
+package com.nils.becker.fhplaner.controller;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.widget.TextView;
+
+import com.nils.becker.fhplaner.R;
+import com.nils.becker.fhplaner.model.Course;
 
 public class ClassDetailActivity extends Activity {
 

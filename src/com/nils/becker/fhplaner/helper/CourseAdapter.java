@@ -1,4 +1,4 @@
-package com.nils.becker.fhplaner;
+package com.nils.becker.fhplaner.helper;
 
 import java.util.ArrayList;
 
@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import com.nils.becker.fhplaner.R;
+import com.nils.becker.fhplaner.model.Course;
 
 public class CourseAdapter extends ArrayAdapter<Course> {
 

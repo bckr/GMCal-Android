@@ -1,4 +1,4 @@
-package com.nils.becker.fhplaner;
+package com.nils.becker.fhplaner.helper;
 
 import java.io.IOException;
 

@@ -1,12 +1,11 @@
-package com.nils.becker.fhplaner;
+package com.nils.becker.fhplaner.settings;
 
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 
-import java.util.Set;
-import java.util.TreeSet;
+import com.nils.becker.fhplaner.model.Course;
+import com.nils.becker.fhplaner.R;
 
 public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 

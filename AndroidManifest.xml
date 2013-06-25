@@ -16,25 +16,18 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.nils.becker.fhplaner.ScheduleListView"
-            android:label="@string/Wochenansicht" >
+            android:name=".controller.ScheduleListViewActivity"
+            android:label="Wochenansicht" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.nils.becker.fhplaner.ClassDetailActivity"
+            android:name=".controller.ClassDetailActivity"
             android:label="@string/Detailansicht" >
         </activity>
-        <activity android:name=".SettingsActivity"/>
-        <activity android:name=".StartupActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
+        <activity android:name=".settings.SettingsActivity"/>
     </application>
 
 </manifest>

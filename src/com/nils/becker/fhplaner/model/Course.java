@@ -1,4 +1,4 @@
-package com.nils.becker.fhplaner;
+package com.nils.becker.fhplaner.model;
 
 import java.io.Serializable;
 import java.util.HashMap;
