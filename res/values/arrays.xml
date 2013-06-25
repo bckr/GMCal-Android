@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pref_major_entries">
+        <item>Informatik</item>
+        <item>Ingenuerwesen</item>
+    </string-array>
+    <string-array name="pref_branch_entries">
+        <item>Wirtschaftsinformatik</item>
+        <item>Medieninformatik</item>
+        <item>Allgemeine Informatik</item>
+        <item>Technische Informatik</item>
+    </string-array>
+    <string-array name="pref_semester_entries">
+        <item>1. Semester</item>
+        <item>2. Semester</item>
+        <item>3. Semester</item>
+        <item>4. Semester</item>
+        <item>5. Semester</item>
+        <item>6. Semester</item>
+    </string-array>
+</resources>

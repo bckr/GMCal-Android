@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+            android:title="Basiseinstellungen"
+            android:key="pref_key_storage_settings">
+        <ListPreference
+                android:key="pref_branch"
+                android:title="Studiengang"
+                android:dialogTitle="Studiengang wählen"
+                android:entries="@array/pref_branch_entries"
+                android:entryValues="@array/pref_branch_entries"
+                android:summary="Wähle deinen Studiengang"/>
+        <ListPreference
+                android:key="pref_semester"
+                android:title="Semester"
+                android:dialogTitle="Semester wählen"
+                android:entries="@array/pref_semester_entries"
+                android:entryValues="@array/pref_semester_entries"
+                android:summary="Wähle dein Semester"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+            android:title="Filter"
+            android:key="pref_key_storage_settings">
+        <CheckBoxPreference
+                android:key="pref_show_vorlesung"
+                android:title="Vorlesungen"
+                android:summary="Vorlesungen anzeigen"
+                android:defaultValue="true"/>
+        <CheckBoxPreference
+                android:key="pref_show_seminare"
+                android:title="Seminare"
+                android:summary="Seminare anzeigen"
+                android:defaultValue="true"/>
+        <CheckBoxPreference
+                android:key="pref_show_praktika"
+                android:title="Praktika"
+                android:summary="Praktika anzeigen"
+                android:defaultValue="false"/>
+        <CheckBoxPreference
+                android:key="pref_show_tutorien"
+                android:title="Tutorien"
+                android:summary="Tutorien anzeigen"
+                android:defaultValue="false"/>
+    </PreferenceCategory>
+</PreferenceScreen>
