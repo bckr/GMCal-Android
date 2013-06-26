@@ -51,42 +51,55 @@ public class Course implements Serializable {
 	public String getAbbreviation() {
 		return abbreviation;
 	}
+
 	public void setAbbreviation(String abbreviation) {
 		this.abbreviation = abbreviation;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public String getType() {
 		return type;
 	}
+
 	public void setType(String type) {
 		this.type = type;
 	}
+
 	public int getDay() {
 		return day;
 	}
+
 	public void setDay(int day) {
 		this.day = day;
 	}
+
 	public int getStart() {
 		return start;
 	}
+
 	public void setStart(int start) {
 		this.start = start;
 	}
+
 	public int getEnd() {
 		return end;
 	}
+
 	public void setEnd(int end) {
 		this.end = end;
 	}
+
 	public int getRoom() {
 		return room;
 	}
+
 	public void setRoom(int room) {
 		this.room = room;
 	}
@@ -111,11 +124,11 @@ public class Course implements Serializable {
 	
 	public static int colorForCourseType(String type) {
 		int color = Color.WHITE;
-		if (type.equals("V")) color = Color.parseColor("#33B5E5"); 
-		if (type.equals("P")) color = Color.parseColor("#FF4444"); 
-		if (type.equals("S")) color = Color.parseColor("#FFBB33"); 
-		if (type.equals("UE")) color = Color.parseColor("#99CC00"); 
-		if (type.equals("T")) color = Color.parseColor("#AA66CC"); 
+		if (type.equals("V")) color = Color.parseColor("#33B5E5");
+		if (type.equals("P")) color = Color.parseColor("#FF4444");
+		if (type.equals("S")) color = Color.parseColor("#FFBB33");
+		if (type.equals("UE")) color = Color.parseColor("#99CC00");
+		if (type.equals("T")) color = Color.parseColor("#AA66CC");
 		return color;
 	}
 
