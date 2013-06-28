@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".controller.ClassDetailActivity"
+            android:name=".controller.CourseDetailActivity"
             android:label="@string/Detailansicht" >
         </activity>
     </application>

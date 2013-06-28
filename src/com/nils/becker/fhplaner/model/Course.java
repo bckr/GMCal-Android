@@ -14,12 +14,13 @@ public class Course implements Serializable {
 	private String abbreviation;
 	private String name;
 	private String type;
+    private String lecturer_short;
 	private int day;
 	private int start;
 	private int end;
 	private int room;
 
-	public Course(String abbr, String name, String type, int day, int start, int end, int room) {
+	public Course(String abbr, String name, String type, int day, int start, int end, int room, String lecturer_short) {
 		this.abbreviation = abbr;
 		this.name = name;
 		this.type = type;
@@ -27,6 +28,7 @@ public class Course implements Serializable {
 		this.start = start;
 		this.end = end;
 		this.room = room;
+        this.lecturer_short = lecturer_short;
 	}
 
 	public Course(JSONObject jsonObject) {
@@ -34,6 +36,7 @@ public class Course implements Serializable {
 			this.abbreviation = jsonObject.getString("abbreviation");
 			this.name = jsonObject.getString("name");
 			this.type = jsonObject.getString("type");
+            this.lecturer_short = jsonObject.getString("lecturer_short");
 			this.day = (int) jsonObject.getDouble("day");
 			this.start = (int) jsonObject.getDouble("start");
 			this.end = (int) jsonObject.getDouble("end");
@@ -103,6 +106,14 @@ public class Course implements Serializable {
 	public void setRoom(int room) {
 		this.room = room;
 	}
+
+    public String getLecturer_short() {
+        return this.lecturer_short;
+    }
+
+    public void setLecturer_short(String lecturer_short) {
+        this.lecturer_short = lecturer_short;
+    }
 
 	public String getRoomFormatted() {
 		String roomNumber = Integer.toString(this.room);
