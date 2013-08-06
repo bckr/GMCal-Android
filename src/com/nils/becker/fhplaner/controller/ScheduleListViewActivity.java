@@ -8,11 +8,15 @@ import org.json.JSONException;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.ContentObserver;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,19 +27,22 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.nils.becker.fhplaner.R;
-import com.nils.becker.fhplaner.helper.CourseAdapter;
-import com.nils.becker.fhplaner.helper.FetchScheduleTask;
-import com.nils.becker.fhplaner.helper.ScheduleFetcher;
+import com.nils.becker.fhplaner.service.CourseAdapter;
+import com.nils.becker.fhplaner.service.CourseCursorAdapter;
+import com.nils.becker.fhplaner.service.FetchScheduleTask;
+import com.nils.becker.fhplaner.service.ScheduleFetcher;
+import com.nils.becker.fhplaner.service.ScheduleOpenHelper;
 import com.nils.becker.fhplaner.model.Course;
 import com.nils.becker.fhplaner.settings.SettingsActivity;
 
-public class ScheduleListViewActivity extends Activity implements ScheduleFetcher, SharedPreferences.OnSharedPreferenceChangeListener, ActionBar.OnNavigationListener {
+public class ScheduleListViewActivity extends Activity implements ActionBar.OnNavigationListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
 	private ArrayList<Course> list = new ArrayList<Course>();
-	private CourseAdapter adapter;
+	private CourseCursorAdapter adapter;
 	private ListView listView;
     private int mFeatureId;
     private MenuItem mItem;
+    private ScheduleOpenHelper dbHelper;
 
     @Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -50,6 +57,7 @@ public class ScheduleListViewActivity extends Activity implements ScheduleFetche
         setContentView(R.layout.activity_schedule_list);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
         // sharedPreferences.edit().clear().commit();
 
         if (isFirstStartup()) {
@@ -58,27 +66,73 @@ public class ScheduleListViewActivity extends Activity implements ScheduleFetche
         }
 
         setupActionBar();
+        setupListView();
+    }
 
-		new FetchScheduleTask(this).execute("http://nils-becker.com/fhg/schedule/lecturer/FW");
+    @Override
+    public boolean onMenuItemSelected(int featureId, MenuItem item) {
+        mFeatureId = featureId;
+        mItem = item;
 
-		this.listView = (ListView) findViewById(R.id.listview);
+        switch (item.getItemId()){
+    /*        case R.id.action_refresh:
+                System.out.println("refresh");
+                break;*/
+            case R.id.action_settings:
+                System.out.println("settings");
+                Intent showNextActivityIntent = new Intent(ScheduleListViewActivity.this, SettingsActivity.class);
+                startActivity(showNextActivityIntent);
+                break;
+        }
 
-		adapter = new CourseAdapter(this, R.layout.class_item_row);
-		listView.setAdapter(adapter);
-		
-		listView.setOnItemClickListener(new OnItemClickListener() {
+        return super.onMenuItemSelected(featureId, item);
+    }
 
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				Intent showNextActivityIntent = new Intent(ScheduleListViewActivity.this, ClassDetailActivity.class);
-				Course selectedCourse = adapter.getItem(arg2);
-				showNextActivityIntent.putExtra("selectedCourse", selectedCourse);
-				startActivity(showNextActivityIntent);
-			}
-			
-		});
+    @Override
+    public boolean onNavigationItemSelected(int i, long l) {
 
-        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
+        Log.d("debug", "switched view" + i);
+
+        switch (i) {
+            case 0:
+                int dayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 2;
+                this.adapter.changeCursor(this.dbHelper.getCoursesForDayOfWeek(dayOfWeek));
+                break;
+            case 1:
+                this.adapter.changeCursor(this.dbHelper.getAllCourses());
+                break;
+        }
+
+        return false;
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+        if (s.equals("dbupdate")) {
+            Log.d("debug", "reload list view");
+            this.adapter.changeCursor(this.dbHelper.getAllCourses());
+        }
+    }
+
+    private void setupListView() {
+        this.listView = (ListView) findViewById(R.id.listview);
+        this.dbHelper = new ScheduleOpenHelper(this);
+        Cursor cursor = this.dbHelper.getAllCourses();
+
+        this.adapter = new CourseCursorAdapter(this, cursor, true);
+        listView.setAdapter(this.adapter);
+
+        listView.setOnItemClickListener(new OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                Intent showNextActivityIntent = new Intent(ScheduleListViewActivity.this, CourseDetailActivity.class);
+                Course selectedCourse = (Course) adapter.getItem(arg2);
+                showNextActivityIntent.putExtra("selectedCourse", selectedCourse);
+                startActivity(showNextActivityIntent);
+            }
+
+        });
     }
 
     private void setupActionBar() {
@@ -114,49 +168,5 @@ public class ScheduleListViewActivity extends Activity implements ScheduleFetche
         return sharedPreferences.getString("ressourceURL", "").equals("");
     }
 
-    @Override
-    public boolean onMenuItemSelected(int featureId, MenuItem item) {
-        mFeatureId = featureId;
-        mItem = item;
 
-        switch (item.getItemId()){
-    /*        case R.id.action_refresh:
-                System.out.println("refresh");
-                break;*/
-            case R.id.action_settings:
-                System.out.println("settings");
-                Intent showNextActivityIntent = new Intent(ScheduleListViewActivity.this, SettingsActivity.class);
-                startActivity(showNextActivityIntent);
-                break;
-        }
-
-        return super.onMenuItemSelected(featureId, item);
-    }
-
-    @Override
-	public void responseLoaded(JSONArray response) {
-        this.list = new ArrayList<Course>();
-		for (int i = 0; i < response.length(); i++) {
-			try {
-				Course currentCourse = new Course(response.getJSONObject(i));
-				this.list.add(currentCourse);
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-
-		}
-		this.adapter.setCourseList(this.list);
-	}
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-        if (s.equals("ressourceURL")) {
-            new FetchScheduleTask(this).execute(sharedPreferences.getString("ressourceURL", ""));
-        }
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(int i, long l) {
-        return false;
-    }
 }

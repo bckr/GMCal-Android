@@ -20,7 +20,7 @@ public class Course implements Serializable {
 	private int end;
 	private int room;
 
-	public Course(String abbr, String name, String type, int day, int start, int end, int room, String lecturer_short) {
+	public Course(String abbr, String name, String type, String lecturer_short, int day, int start, int end, int room) {
 		this.abbreviation = abbr;
 		this.name = name;
 		this.type = type;

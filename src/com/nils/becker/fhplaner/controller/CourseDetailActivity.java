@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.nils.becker.fhplaner.R;
 import com.nils.becker.fhplaner.model.Course;
 
-public class ClassDetailActivity extends Activity {
+public class CourseDetailActivity extends Activity {
 
 	final String debugPrefix = "Debug ->";
 	private Course course;
