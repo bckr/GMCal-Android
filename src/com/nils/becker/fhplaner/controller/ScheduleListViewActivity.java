@@ -3,17 +3,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import android.app.ActionBar;
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.ContentObserver;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -27,11 +21,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.nils.becker.fhplaner.R;
-import com.nils.becker.fhplaner.service.CourseAdapter;
 import com.nils.becker.fhplaner.service.CourseCursorAdapter;
-import com.nils.becker.fhplaner.service.FetchScheduleTask;
-import com.nils.becker.fhplaner.service.ScheduleFetcher;
-import com.nils.becker.fhplaner.service.ScheduleOpenHelper;
+import com.nils.becker.fhplaner.service.ScheduleDBA;
 import com.nils.becker.fhplaner.model.Course;
 import com.nils.becker.fhplaner.settings.SettingsActivity;
 
@@ -42,7 +33,7 @@ public class ScheduleListViewActivity extends Activity implements ActionBar.OnNa
 	private ListView listView;
     private int mFeatureId;
     private MenuItem mItem;
-    private ScheduleOpenHelper dbHelper;
+    private ScheduleDBA dbHelper;
 
     @Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -90,19 +81,7 @@ public class ScheduleListViewActivity extends Activity implements ActionBar.OnNa
 
     @Override
     public boolean onNavigationItemSelected(int i, long l) {
-
-        Log.d("debug", "switched view" + i);
-
-        switch (i) {
-            case 0:
-                int dayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 2;
-                this.adapter.changeCursor(this.dbHelper.getCoursesForDayOfWeek(dayOfWeek));
-                break;
-            case 1:
-                this.adapter.changeCursor(this.dbHelper.getAllCourses());
-                break;
-        }
-
+        reloadListView();
         return false;
     }
 
@@ -110,14 +89,31 @@ public class ScheduleListViewActivity extends Activity implements ActionBar.OnNa
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
         if (s.equals("dbupdate")) {
             Log.d("debug", "reload list view");
-            this.adapter.changeCursor(this.dbHelper.getAllCourses());
+            this.reloadListView();
+        } else if (s.substring(0, 9).equals("pref_show")) {
+            Log.d("debug", "filter changed");
+            this.reloadListView();
+        }
+    }
+
+    private void reloadListView() {
+        switch (getActionBar().getSelectedNavigationIndex()) {
+            case 0:
+                int dayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
+                this.adapter.changeCursor(this.dbHelper.getCoursesForDayOfWeekWithFilter(dayOfWeek, this.getTypeFilter()));
+                break;
+            case 1:
+                this.adapter.changeCursor(this.dbHelper.getAllCoursesWithFilter(this.getTypeFilter()));
+                break;
+            default:
+                this.adapter.changeCursor(dbHelper.getAllCourses());
         }
     }
 
     private void setupListView() {
         this.listView = (ListView) findViewById(R.id.listview);
-        this.dbHelper = new ScheduleOpenHelper(this);
-        Cursor cursor = this.dbHelper.getAllCourses();
+        this.dbHelper = new ScheduleDBA(this);
+        Cursor cursor = this.dbHelper.getAllCoursesWithFilter(new String[]{"V"});
 
         this.adapter = new CourseCursorAdapter(this, cursor, true);
         listView.setAdapter(this.adapter);
@@ -168,5 +164,16 @@ public class ScheduleListViewActivity extends Activity implements ActionBar.OnNa
         return sharedPreferences.getString("ressourceURL", "").equals("");
     }
 
+    private String[] getTypeFilter() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
+        ArrayList<String> filterList = new ArrayList<String>();
+        if(!sharedPreferences.getBoolean("pref_show_vorlesungen", true)) filterList.add("V");
+        if(!sharedPreferences.getBoolean("pref_show_uebungen", true)) filterList.add("UE");
+        if(!sharedPreferences.getBoolean("pref_show_praktika", false)) filterList.add("P");
+        if(!sharedPreferences.getBoolean("pref_show_seminare", false)) filterList.add("S");
+        if(!sharedPreferences.getBoolean("pref_show_tutorien", true)) filterList.add("T");
+
+        return filterList.toArray(new String[filterList.size()]);
+    }
 }

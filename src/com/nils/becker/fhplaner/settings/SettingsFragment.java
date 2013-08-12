@@ -5,19 +5,17 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
-import android.util.Log;
 
 import com.nils.becker.fhplaner.model.Course;
 import com.nils.becker.fhplaner.R;
 import com.nils.becker.fhplaner.service.FetchScheduleTask;
+import com.nils.becker.fhplaner.service.ScheduleDBA;
 import com.nils.becker.fhplaner.service.ScheduleFetcher;
-import com.nils.becker.fhplaner.service.ScheduleOpenHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
-import java.util.Observable;
 
 public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener, ScheduleFetcher{
 
@@ -60,7 +58,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
     private void persistSchedule(ArrayList<Course> courseList) {
 
-        ScheduleOpenHelper dbHelper = new ScheduleOpenHelper(this.getActivity());
+        ScheduleDBA dbHelper = new ScheduleDBA(this.getActivity());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.beginTransaction();
 

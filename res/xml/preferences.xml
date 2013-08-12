@@ -23,9 +23,14 @@
             android:title="Filter"
             android:key="pref_key_storage_settings">
         <CheckBoxPreference
-                android:key="pref_show_vorlesung"
+                android:key="pref_show_vorlesungen"
                 android:title="Vorlesungen"
                 android:summary="Vorlesungen anzeigen"
+                android:defaultValue="true"/>
+        <CheckBoxPreference
+                android:key="pref_show_uebungen"
+                android:title="Übungen"
+                android:summary="Übungen anzeigen"
                 android:defaultValue="true"/>
         <CheckBoxPreference
                 android:key="pref_show_seminare"
