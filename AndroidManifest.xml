@@ -25,9 +25,12 @@
         </activity>
         <activity
             android:name=".controller.CourseDetailActivity"
+            android:parentActivityName=".controller.ScheduleListViewActivity"
             android:label="@string/Detailansicht" >
         </activity>
-        <activity android:name=".settings.SettingsActivity"/>
+        <activity android:name=".settings.SettingsActivity"
+            android:parentActivityName=".controller.ScheduleListViewActivity">
+        </activity>
     </application>
 
 </manifest>

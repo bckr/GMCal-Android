@@ -21,15 +21,21 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.nils.becker.fhplaner.R;
-import com.nils.becker.fhplaner.service.CourseCursorAdapter;
+import com.nils.becker.fhplaner.service.CourseAdapter;
 import com.nils.becker.fhplaner.service.ScheduleDBA;
 import com.nils.becker.fhplaner.model.Course;
+import com.nils.becker.fhplaner.service.LecturerFetcher;
 import com.nils.becker.fhplaner.settings.SettingsActivity;
 
 public class ScheduleListViewActivity extends Activity implements ActionBar.OnNavigationListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
-	private ArrayList<Course> list = new ArrayList<Course>();
-	private CourseCursorAdapter adapter;
+    private static final int STARTOFWEEK = 1;
+    private static final int ENDOFWEEK = 4;
+    public static final String DATEFORMAT_DAY = "EEEE dd. MMM";
+    public static final String DATEFORMAT_WEEK = "EEE. dd";
+
+    private ArrayList<Course> list = new ArrayList<Course>();
+	private CourseAdapter adapter;
 	private ListView listView;
     private int mFeatureId;
     private MenuItem mItem;
@@ -45,11 +51,14 @@ public class ScheduleListViewActivity extends Activity implements ActionBar.OnNa
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_schedule_list);
+        setContentView(R.layout.list_view_schedule);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
         // sharedPreferences.edit().clear().commit();
+
+        LecturerFetcher fetcher = new LecturerFetcher(this.getApplicationContext());
+        fetcher.fetchLecturers();
 
         if (isFirstStartup()) {
             Intent switchToSettingsActivity = new Intent(ScheduleListViewActivity.this, SettingsActivity.class);
@@ -70,7 +79,6 @@ public class ScheduleListViewActivity extends Activity implements ActionBar.OnNa
                 System.out.println("refresh");
                 break;*/
             case R.id.action_settings:
-                System.out.println("settings");
                 Intent showNextActivityIntent = new Intent(ScheduleListViewActivity.this, SettingsActivity.class);
                 startActivity(showNextActivityIntent);
                 break;
@@ -111,11 +119,23 @@ public class ScheduleListViewActivity extends Activity implements ActionBar.OnNa
     }
 
     private void setupListView() {
-        this.listView = (ListView) findViewById(R.id.listview);
+        this.listView = (ListView) findViewById(R.id.list_view_schedule);
         this.dbHelper = new ScheduleDBA(this);
-        Cursor cursor = this.dbHelper.getAllCoursesWithFilter(new String[]{"V"});
 
-        this.adapter = new CourseCursorAdapter(this, cursor, true);
+        int dayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
+        Cursor cursor;
+
+        Log.d("debug", "day of week: " + Integer.toString(dayOfWeek));
+
+        if (dayOfWeek >= STARTOFWEEK && dayOfWeek <= ENDOFWEEK) {
+            cursor = this.dbHelper.getCoursesForDayOfWeekWithFilter(dayOfWeek, this.getTypeFilter());
+            this.getActionBar().setSelectedNavigationItem(0);
+        } else {
+            cursor = this.dbHelper.getAllCourses();
+            this.getActionBar().setSelectedNavigationItem(1);
+        }
+
+        this.adapter = new CourseAdapter(this, R.layout.list_view_course_item_row, R.layout.list_view_section_header, cursor);
         listView.setAdapter(this.adapter);
 
         listView.setOnItemClickListener(new OnItemClickListener() {
@@ -132,18 +152,20 @@ public class ScheduleListViewActivity extends Activity implements ActionBar.OnNa
     }
 
     private void setupActionBar() {
+        // Setup ActionBar behavior
         final ActionBar actionBar = getActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE dd. MMM");
+        // Setup Spinner appearance
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATEFORMAT_DAY);
         Calendar cal = Calendar.getInstance();
 
         final String today = dateFormat.format(cal.getTime());
         cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
 
-        dateFormat = new SimpleDateFormat("EEE. dd");
+        dateFormat = new SimpleDateFormat(DATEFORMAT_WEEK);
         final String startOfWeek = dateFormat.format(cal.getTime());
         cal.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
         final String endOfWeek= dateFormat.format(cal.getTime());
@@ -154,7 +176,7 @@ public class ScheduleListViewActivity extends Activity implements ActionBar.OnNa
                 android.R.layout.simple_spinner_item, android.R.id.text1,
                 dropdownValues);
 
-        menuListAdapter .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        menuListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         actionBar.setListNavigationCallbacks(menuListAdapter , this);
     }
@@ -167,7 +189,7 @@ public class ScheduleListViewActivity extends Activity implements ActionBar.OnNa
     private String[] getTypeFilter() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        ArrayList<String> filterList = new ArrayList<String>();
+        ArrayList<String> filterList = new ArrayList<String>(5);
         if(!sharedPreferences.getBoolean("pref_show_vorlesungen", true)) filterList.add("V");
         if(!sharedPreferences.getBoolean("pref_show_uebungen", true)) filterList.add("UE");
         if(!sharedPreferences.getBoolean("pref_show_praktika", false)) filterList.add("P");

@@ -16,17 +16,17 @@ import org.json.JSONException;
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class FetchScheduleTask extends AsyncTask<String, Void, JSONArray> {
+public class FetchCoursesTask extends AsyncTask<String, Void, JSONArray> {
 
-	private ScheduleFetcher callbackActivity;
+	private Fetcher callback;
 	
-	public FetchScheduleTask(ScheduleFetcher callbackActivity) {
-		this.callbackActivity = callbackActivity;
+	public FetchCoursesTask(Fetcher callback) {
+		this.callback = callback;
 	}
 	
 	@Override
 	protected JSONArray doInBackground(String... params) {
-		Log.d("---->", params[0]);
+		Log.d("debug", params[0]);
 		HttpClient httpclient = new DefaultHttpClient();
 		// Prepare a request object
 		HttpGet httpget = new HttpGet(params[0]);
@@ -64,7 +64,7 @@ public class FetchScheduleTask extends AsyncTask<String, Void, JSONArray> {
 	
 	@Override
 	protected void onPostExecute(JSONArray result) {
-		this.callbackActivity.responseLoaded(result);
+		this.callback.responseLoaded(result);
 	}
 	
 }

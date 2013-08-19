@@ -1,15 +1,14 @@
 package com.nils.becker.fhplaner.model;
 
+import android.database.Cursor;
+
 import java.io.Serializable;
-import java.util.HashMap;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.graphics.Color;
-
 @SuppressWarnings("serial")
-public class Course implements Serializable {
+public class Course implements Serializable, RowItem {
 
 	private String abbreviation;
 	private String name;
@@ -46,7 +45,18 @@ public class Course implements Serializable {
 		}
 	}
 
-	@Override
+    public Course(Cursor cursor) {
+        this.abbreviation = cursor.getString(cursor.getColumnIndex("abbreviation"));
+        this.name = cursor.getString(cursor.getColumnIndex("name"));
+        this.type = cursor.getString(cursor.getColumnIndex("type"));
+        this.lecturer_short = cursor.getString(cursor.getColumnIndex("lecturer_short"));;
+        this.day = cursor.getInt(cursor.getColumnIndex("day"));
+        this.start = cursor.getInt(cursor.getColumnIndex("start"));
+        this.end = cursor.getInt(cursor.getColumnIndex("end"));
+        this.room = cursor.getInt(cursor.getColumnIndex("room"));
+    }
+
+    @Override
 	public String toString() {
 		return this.name + " from: " + this.start + " to: " + this.end + " in: " + this.room;
 	}
@@ -113,42 +123,5 @@ public class Course implements Serializable {
 
     public void setLecturer_short(String lecturer_short) {
         this.lecturer_short = lecturer_short;
-    }
-
-	public String getRoomFormatted() {
-		String roomNumber = Integer.toString(this.room);
-		if(roomNumber.length() > 3) {
-			roomNumber = roomNumber.substring(0, 1) + "." + roomNumber.substring(1);
-		} else {
-			roomNumber = "0." + roomNumber;
-		}
-		return roomNumber;
-	}
-	
-	public String timeSpan() {
-		if (this.start > 1) {
-			return Integer.toString(start + 7) + ":00 - " + Integer.toString(end + 7) + ":00";
-		} else {
-			return "08:30 - " + Integer.toString(end + 7) + ":00";
-		}
-	}
-	
-	public static int colorForCourseType(String type) {
-		int color = Color.WHITE;
-		if (type.equals("V")) color = Color.parseColor("#33B5E5");
-		if (type.equals("P")) color = Color.parseColor("#FF4444");
-		if (type.equals("S")) color = Color.parseColor("#FFBB33");
-		if (type.equals("UE")) color = Color.parseColor("#99CC00");
-		if (type.equals("T")) color = Color.parseColor("#AA66CC");
-		return color;
-	}
-
-    public static String keyForCourseName(String name) {
-        HashMap<String, String> keyForCourse = new HashMap<String, String>();
-        keyForCourse.put("Wirtschaftsinformatik", "WI");
-        keyForCourse.put("Medieninformatik", "MI");
-        keyForCourse.put("Angewandte Informatik", "AI");
-        keyForCourse.put("Technische Informatik", "TI");
-        return keyForCourse.get(name);
     }
 }

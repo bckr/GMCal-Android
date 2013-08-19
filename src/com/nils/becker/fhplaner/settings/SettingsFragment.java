@@ -8,16 +8,17 @@ import android.preference.PreferenceFragment;
 
 import com.nils.becker.fhplaner.model.Course;
 import com.nils.becker.fhplaner.R;
-import com.nils.becker.fhplaner.service.FetchScheduleTask;
 import com.nils.becker.fhplaner.service.ScheduleDBA;
-import com.nils.becker.fhplaner.service.ScheduleFetcher;
+import com.nils.becker.fhplaner.service.CourseService;
+import com.nils.becker.fhplaner.service.FetchCoursesTask;
+import com.nils.becker.fhplaner.service.Fetcher;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
 
-public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener, ScheduleFetcher{
+public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener, Fetcher {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,9 +35,9 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         if (s.equals("pref_semester") || s.equals("pref_branch")) {
             String semester = sharedPreferences.getString("pref_semester", "1. Semester");
             String branch = sharedPreferences.getString("pref_branch", "Wirtschaftsinformatik");
-            String newRessourceUrl = "http://nils-becker.com/fhg/schedule/student/20/" + Course.keyForCourseName(branch) + "/" + semester.substring(0, 1) + "/";
+            String newRessourceUrl = "http://nils-becker.com/fhg/schedule/student/20/" + CourseService.keyForCourseName(branch) + "/" + semester.substring(0, 1) + "/";
             sharedPreferences.edit().putString("ressourceURL", newRessourceUrl).commit();
-            new FetchScheduleTask(this).execute(newRessourceUrl);
+            new FetchCoursesTask(this).execute(newRessourceUrl);
         }
     }
 
@@ -63,19 +64,19 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         db.beginTransaction();
 
         // delete all previous entries
-        db.delete("course", null, null);
+        db.delete(ScheduleDBA.COURSE_TABLE_NAME, null, null);
 
         ContentValues content = new ContentValues();
         for(Course c : courseList) {
-            content.put("abbreviation", c.getAbbreviation());
-            content.put("name", c.getName());
-            content.put("type", c.getType());
-            content.put("lecturer_short", c.getLecturer_short());
-            content.put("day", c.getDay());
-            content.put("start", c.getStart());
-            content.put("end", c.getEnd());
-            content.put("room", c.getRoom());
-            db.insert("Course", null, content);
+            content.put(ScheduleDBA.KEY_ABBREVIATION, c.getAbbreviation());
+            content.put(ScheduleDBA.KEY_NAME, c.getName());
+            content.put(ScheduleDBA.KEY_TYPE, c.getType());
+            content.put(ScheduleDBA.KEY_LECTURER_SHORT, c.getLecturer_short());
+            content.put(ScheduleDBA.KEY_DAY, c.getDay());
+            content.put(ScheduleDBA.KEY_START, c.getStart());
+            content.put(ScheduleDBA.KEY_END, c.getEnd());
+            content.put(ScheduleDBA.KEY_ROOM, c.getRoom());
+            db.insert(ScheduleDBA.COURSE_TABLE_NAME, null, content);
         }
 
         db.setTransactionSuccessful();
