@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,6 +86,7 @@ public class CourseAdapter extends ArrayAdapter<RowItem> {
             TextView courseNameView;
             TextView courseRoomView;
             TextView courseTimeView;
+            TextView courseLecturerView;
             TextView courseTypeTextView;
             View courseTypeIndicatorView;
             View courseTimelineView;
@@ -94,27 +94,30 @@ public class CourseAdapter extends ArrayAdapter<RowItem> {
             if (convertView == null) {
                 convertView = this.inflater.inflate(this.rowLayoutRessourceId, parent, false);
 
-                courseNameView = (TextView) convertView.findViewById(R.id.courseItemName);
-                courseRoomView = (TextView) convertView.findViewById(R.id.courseItemRoom);
-                courseTimeView = (TextView) convertView.findViewById(R.id.courseItemTime);
-                courseTypeTextView = (TextView) convertView.findViewById(R.id.courseTypeText);
-                courseTypeIndicatorView = convertView.findViewById(R.id.indicatorView);
-                courseTimelineView= convertView.findViewById(R.id.courseTimeline);
+                courseNameView = (TextView) convertView.findViewById(R.id.courseNameTextView);
+                courseRoomView = (TextView) convertView.findViewById(R.id.courseRoomTextView);
+                courseTimeView = (TextView) convertView.findViewById(R.id.courseTimespanTextView);
+                courseLecturerView = (TextView) convertView.findViewById(R.id.courseLecturerTextView);
+                courseTypeTextView = (TextView) convertView.findViewById(R.id.courseTypeTextView);
+                courseTypeIndicatorView = convertView.findViewById(R.id.courseTypeIndicatorView);
+                courseTimelineView= convertView.findViewById(R.id.courseTimelineView);
 
                 // Tag views for reuse
-                convertView.setTag(R.id.courseItemName, courseNameView);
-                convertView.setTag(R.id.courseItemRoom, courseRoomView);
-                convertView.setTag(R.id.courseItemTime, courseTimeView);
-                convertView.setTag(R.id.courseTypeText, courseTypeTextView);
-                convertView.setTag(R.id.indicatorView, courseTypeIndicatorView);
-                convertView.setTag(R.id.courseTimeline, courseTimelineView);
+                convertView.setTag(R.id.courseNameTextView, courseNameView);
+                convertView.setTag(R.id.courseRoomTextView, courseRoomView);
+                convertView.setTag(R.id.courseTimespanTextView, courseTimeView);
+                convertView.setTag(R.id.courseLecturerTextView, courseLecturerView);
+                convertView.setTag(R.id.courseTypeTextView, courseTypeTextView);
+                convertView.setTag(R.id.courseTypeIndicatorView, courseTypeIndicatorView);
+                convertView.setTag(R.id.courseTimelineView, courseTimelineView);
             } else {
-                courseNameView = (TextView) convertView.getTag(R.id.courseItemName);
-                courseRoomView = (TextView) convertView.getTag(R.id.courseItemRoom);
-                courseTimeView = (TextView) convertView.getTag(R.id.courseItemTime);
-                courseTypeTextView = (TextView) convertView.getTag(R.id.courseTypeText);
-                courseTypeIndicatorView = (View) convertView.getTag(R.id.indicatorView);
-                courseTimelineView = (View) convertView.getTag(R.id.courseTimeline);
+                courseNameView = (TextView) convertView.getTag(R.id.courseNameTextView);
+                courseRoomView = (TextView) convertView.getTag(R.id.courseRoomTextView);
+                courseTimeView = (TextView) convertView.getTag(R.id.courseTimespanTextView);
+                courseLecturerView = (TextView) convertView.getTag(R.id.courseLecturerTextView);
+                courseTypeTextView = (TextView) convertView.getTag(R.id.courseTypeTextView);
+                courseTypeIndicatorView = (View) convertView.getTag(R.id.courseTypeIndicatorView);
+                courseTimelineView = (View) convertView.getTag(R.id.courseTimelineView);
             }
 
             Course currentCourse = (Course) this.getItem(position);
@@ -122,6 +125,8 @@ public class CourseAdapter extends ArrayAdapter<RowItem> {
             courseNameView.setText(currentCourse.getName());
             courseRoomView.setText(CourseService.getFormattedRoom(currentCourse.getRoom()));
             courseTimeView.setText(CourseService.getFormattedTimeSpan(currentCourse.getStart(), currentCourse.getEnd()));
+            // TODO set real lecturer name
+            courseLecturerView.setText("Victor");
             courseTypeTextView.setText(currentCourse.getType().substring(0, 1));
             courseTypeIndicatorView.setBackgroundColor(CourseService.colorForCourseType(currentCourse.getType()));
             courseTimelineView.setBackgroundColor(Color.parseColor("#CCCCCC"));
