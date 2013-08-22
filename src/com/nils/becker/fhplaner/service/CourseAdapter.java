@@ -125,8 +125,7 @@ public class CourseAdapter extends ArrayAdapter<RowItem> {
             courseNameView.setText(currentCourse.getName());
             courseRoomView.setText(CourseService.getFormattedRoom(currentCourse.getRoom()));
             courseTimeView.setText(CourseService.getFormattedTimeSpan(currentCourse.getStart(), currentCourse.getEnd()));
-            // TODO set real lecturer name
-            courseLecturerView.setText("Victor");
+            courseLecturerView.setText(currentCourse.getLecturer().getNachname());
             courseTypeTextView.setText(currentCourse.getType().substring(0, 1));
             courseTypeIndicatorView.setBackgroundColor(CourseService.colorForCourseType(currentCourse.getType()));
             courseTimelineView.setBackgroundColor(Color.parseColor("#CCCCCC"));

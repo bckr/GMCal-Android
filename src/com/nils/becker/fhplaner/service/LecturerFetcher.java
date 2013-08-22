@@ -54,7 +54,7 @@ public class LecturerFetcher implements Fetcher {
 
         ContentValues content = new ContentValues();
         for(Lecturer l : lecturers) {
-            content.put(ScheduleDBA.KEY_ABBREVIATION, l.getDozentkuerzel());
+            content.put(ScheduleDBA.KEY_LECTURER_SHORT, l.getDozentkuerzel());
             content.put(ScheduleDBA.KEY_FACULTY, l.getFb_nr());
             content.put(ScheduleDBA.KEY_FORENAME, l.getVorname());
             content.put(ScheduleDBA.KEY_SURNAME, l.getNachname());

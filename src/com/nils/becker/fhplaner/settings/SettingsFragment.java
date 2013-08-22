@@ -18,7 +18,7 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 
-public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener, Fetcher {
+public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,24 +37,24 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             String branch = sharedPreferences.getString("pref_branch", "Wirtschaftsinformatik");
             String newRessourceUrl = "http://nils-becker.com/fhg/schedule/student/20/" + CourseService.keyForCourseName(branch) + "/" + semester.substring(0, 1) + "/";
             sharedPreferences.edit().putString("ressourceURL", newRessourceUrl).commit();
-            new FetchCoursesTask(this).execute(newRessourceUrl);
+
+            new FetchCoursesTask(new Fetcher() {
+                @Override
+                public void responseLoaded(JSONArray response) {
+                    ArrayList<Course> courseList = new ArrayList<Course>();
+                    for (int i = 0; i < response.length(); i++) {
+                        try {
+                            Course currentCourse = new Course(response.getJSONObject(i));
+                            courseList.add(currentCourse);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    persistSchedule(courseList);
+                }
+            }).execute(newRessourceUrl);
         }
-    }
-
-    @Override
-    public void responseLoaded(JSONArray response) {
-
-        ArrayList<Course> courseList = new ArrayList<Course>();
-        for (int i = 0; i < response.length(); i++) {
-            try {
-                Course currentCourse = new Course(response.getJSONObject(i));
-                courseList.add(currentCourse);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-        persistSchedule(courseList);
     }
 
     private void persistSchedule(ArrayList<Course> courseList) {
@@ -71,7 +71,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             content.put(ScheduleDBA.KEY_ABBREVIATION, c.getAbbreviation());
             content.put(ScheduleDBA.KEY_NAME, c.getName());
             content.put(ScheduleDBA.KEY_TYPE, c.getType());
-            content.put(ScheduleDBA.KEY_LECTURER_SHORT, c.getLecturer_short());
+            content.put(ScheduleDBA.KEY_LECTURER_SHORT, c.getLecturer().getDozentkuerzel());
             content.put(ScheduleDBA.KEY_DAY, c.getDay());
             content.put(ScheduleDBA.KEY_START, c.getStart());
             content.put(ScheduleDBA.KEY_END, c.getEnd());

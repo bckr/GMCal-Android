@@ -1,6 +1,9 @@
 package com.nils.becker.fhplaner.model;
 
 import android.database.Cursor;
+import android.util.Log;
+
+import com.nils.becker.fhplaner.service.ScheduleDBA;
 
 import java.io.Serializable;
 
@@ -13,13 +16,13 @@ public class Course implements Serializable, RowItem {
 	private String abbreviation;
 	private String name;
 	private String type;
-    private String lecturer_short;
+    private Lecturer lecturer;
 	private int day;
 	private int start;
 	private int end;
 	private int room;
 
-	public Course(String abbr, String name, String type, String lecturer_short, int day, int start, int end, int room) {
+	public Course(String abbr, String name, String type, Lecturer lecturer, int day, int start, int end, int room) {
 		this.abbreviation = abbr;
 		this.name = name;
 		this.type = type;
@@ -27,7 +30,7 @@ public class Course implements Serializable, RowItem {
 		this.start = start;
 		this.end = end;
 		this.room = room;
-        this.lecturer_short = lecturer_short;
+        this.lecturer = lecturer;
 	}
 
 	public Course(JSONObject jsonObject) {
@@ -35,7 +38,8 @@ public class Course implements Serializable, RowItem {
 			this.abbreviation = jsonObject.getString("abbreviation");
 			this.name = jsonObject.getString("name");
 			this.type = jsonObject.getString("type");
-            this.lecturer_short = jsonObject.getString("lecturer_short");
+            this.lecturer = new Lecturer();
+            this.lecturer.setDozentkuerzel(jsonObject.getString("lecturer_short"));
 			this.day = (int) jsonObject.getDouble("day");
 			this.start = (int) jsonObject.getDouble("start");
 			this.end = (int) jsonObject.getDouble("end");
@@ -49,7 +53,7 @@ public class Course implements Serializable, RowItem {
         this.abbreviation = cursor.getString(cursor.getColumnIndex("abbreviation"));
         this.name = cursor.getString(cursor.getColumnIndex("name"));
         this.type = cursor.getString(cursor.getColumnIndex("type"));
-        this.lecturer_short = cursor.getString(cursor.getColumnIndex("lecturer_short"));;
+        this.lecturer = new Lecturer(cursor);
         this.day = cursor.getInt(cursor.getColumnIndex("day"));
         this.start = cursor.getInt(cursor.getColumnIndex("start"));
         this.end = cursor.getInt(cursor.getColumnIndex("end"));
@@ -117,11 +121,11 @@ public class Course implements Serializable, RowItem {
 		this.room = room;
 	}
 
-    public String getLecturer_short() {
-        return this.lecturer_short;
+    public Lecturer getLecturer() {
+        return this.lecturer;
     }
 
-    public void setLecturer_short(String lecturer_short) {
-        this.lecturer_short = lecturer_short;
+    public void setLecturer(Lecturer lecturer) {
+        this.lecturer = lecturer;
     }
 }

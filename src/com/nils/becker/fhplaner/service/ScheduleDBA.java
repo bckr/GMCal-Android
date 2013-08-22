@@ -29,15 +29,13 @@ public class ScheduleDBA extends SQLiteOpenHelper {
     public static final String KEY_PHONE = "phone";
     public static final String KEY_EMAIL = "email";
     public static final String KEY_HOMEPAGE = "homepage";
+    public static final String KEY_ROOM_LECTURER = "room_lecturer";
 
     public static final String COURSE_TABLE_NAME = "Course";
     public static final String LECTURER_TABLE_NAME = "Lecturer";
 
     private static final String CREATE_COURSE_TABLE_STRING = "CREATE TABLE " + COURSE_TABLE_NAME + " ( _id INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_ABBREVIATION + " TEXT NOT NULL, " + KEY_NAME + " TEXT, " + KEY_TYPE + " TEXT, " + KEY_LECTURER_SHORT + " TEXT, " + KEY_DAY + " INTEGER, " + KEY_START + " INTEGER, " + KEY_END + " INTEGER, " + KEY_ROOM + " INTEGER);";
-
-
-
-    public static final String CREATE_LECTURER_TABLE_STRING = "CREATE TABLE " + LECTURER_TABLE_NAME + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_ABBREVIATION + " TEXT, " + KEY_FACULTY + " INTEGER, " + KEY_FORENAME + " TEXT, " + KEY_SURNAME + " TEXT, " + KEY_FORM + " TEXT, " + KEY_TITLE + " TEXT, " + KEY_FUNCTION + " TEXT, " + KEY_PHONE + " TEXT, " + KEY_EMAIL + " TEXT, " + KEY_HOMEPAGE + " TEXT, " + KEY_ROOM + " INTEGER );";
+    public static final String CREATE_LECTURER_TABLE_STRING = "CREATE TABLE " + LECTURER_TABLE_NAME + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_LECTURER_SHORT + " TEXT, " + KEY_FACULTY + " INTEGER, " + KEY_FORENAME + " TEXT, " + KEY_SURNAME + " TEXT, " + KEY_FORM + " TEXT, " + KEY_TITLE + " TEXT, " + KEY_FUNCTION + " TEXT, " + KEY_PHONE + " TEXT, " + KEY_EMAIL + " TEXT, " + KEY_HOMEPAGE + " TEXT, " + KEY_ROOM_LECTURER + " INTEGER );";
 
 
     public ScheduleDBA(Context context) {
@@ -56,7 +54,8 @@ public class ScheduleDBA extends SQLiteOpenHelper {
     }
 
     public Cursor getAllCourses() {
-        String selectQuery = "SELECT * FROM " + COURSE_TABLE_NAME;
+//        String selectQuery = "SELECT * FROM " + COURSE_TABLE_NAME;
+        String selectQuery = "SELECT * FROM " + COURSE_TABLE_NAME + " JOIN "+ LECTURER_TABLE_NAME + " USING (" + KEY_LECTURER_SHORT + ")";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         return cursor;
@@ -69,7 +68,8 @@ public class ScheduleDBA extends SQLiteOpenHelper {
             return getAllCourses();
         }
 
-        String selectQuery = "SELECT * FROM " + COURSE_TABLE_NAME + " WHERE " + KEY_TYPE + " NOT IN (";
+//        String selectQuery = "SELECT * FROM " + COURSE_TABLE_NAME + " WHERE " + KEY_TYPE + " NOT IN (";
+        String selectQuery = "SELECT * FROM " + COURSE_TABLE_NAME + " JOIN "+ LECTURER_TABLE_NAME + " USING (" + KEY_LECTURER_SHORT + ") WHERE " + KEY_TYPE + " NOT IN (";
         String predicate = "";
 
         for (String type : typesToFilter) {
@@ -89,7 +89,7 @@ public class ScheduleDBA extends SQLiteOpenHelper {
     }
 
     public Cursor getCoursesForDayOfWeek(int dayOfWeek) {
-        String selectQuery = "SELECT * FROM " + COURSE_TABLE_NAME + " WHERE " + KEY_DAY + " = ?";
+        String selectQuery = "SELECT * FROM " + COURSE_TABLE_NAME + " JOIN "+ LECTURER_TABLE_NAME + " USING (" + KEY_LECTURER_SHORT + ") WHERE " + KEY_DAY + " = ?";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, new String[] {Integer.toString(dayOfWeek)});
         return cursor;
@@ -102,7 +102,7 @@ public class ScheduleDBA extends SQLiteOpenHelper {
             return getCoursesForDayOfWeek(dayOfWeek);
         }
 
-        String selectQuery = "SELECT * FROM " + COURSE_TABLE_NAME + " WHERE " + KEY_DAY + " =" + dayOfWeek + " AND " + KEY_TYPE + " NOT IN (";
+        String selectQuery = "SELECT * FROM " + COURSE_TABLE_NAME + " JOIN "+ LECTURER_TABLE_NAME + " USING (" + KEY_LECTURER_SHORT + ") WHERE " + KEY_DAY + " =" + dayOfWeek + " AND " + KEY_TYPE + " NOT IN (";
         String predicate = "";
 
         for (String type : typesToFilter) {

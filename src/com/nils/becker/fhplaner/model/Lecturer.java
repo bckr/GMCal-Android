@@ -1,12 +1,18 @@
 package com.nils.becker.fhplaner.model;
 
+import android.database.Cursor;
+
+import com.nils.becker.fhplaner.service.ScheduleDBA;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.Serializable;
 
 /**
  * Created by nils on 8/18/13.
  */
-public class Lecturer {
+public class Lecturer implements Serializable {
 
     private String dozentkuerzel;
     private int fb_nr;
@@ -19,6 +25,22 @@ public class Lecturer {
     private String email;
     private String homepage;
     private int raum_kz;
+
+    public Lecturer() { }
+
+    public Lecturer(Cursor cursor) {
+        this.dozentkuerzel = cursor.getString(cursor.getColumnIndex(ScheduleDBA.KEY_LECTURER_SHORT));
+        this.fb_nr = cursor.getInt(cursor.getColumnIndex(ScheduleDBA.KEY_FACULTY));
+        this.vorname = cursor.getString(cursor.getColumnIndex(ScheduleDBA.KEY_FORENAME));
+        this.nachname = cursor.getString(cursor.getColumnIndex(ScheduleDBA.KEY_SURNAME));
+        this.anrede = cursor.getString(cursor.getColumnIndex(ScheduleDBA.KEY_FORM));
+        this.titel = cursor.getString(cursor.getColumnIndex(ScheduleDBA.KEY_TITLE));
+        this.funktion = cursor.getString(cursor.getColumnIndex(ScheduleDBA.KEY_FUNCTION));
+        this.tel_intern = cursor.getString(cursor.getColumnIndex(ScheduleDBA.KEY_PHONE));
+        this.email = cursor.getString(cursor.getColumnIndex(ScheduleDBA.KEY_EMAIL));
+        this.homepage = cursor.getString(cursor.getColumnIndex(ScheduleDBA.KEY_HOMEPAGE));
+        this.raum_kz = cursor.getInt(cursor.getColumnIndex(ScheduleDBA.KEY_ROOM_LECTURER));
+    }
 
     public Lecturer(String dozentkuerzel, int fb_nr, String vorname, String nachname, String anrede, String titel, String funktion, String tel_intern, String email, String homepage, int raum_kz) {
         this.dozentkuerzel = dozentkuerzel;

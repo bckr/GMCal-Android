@@ -42,80 +42,86 @@
 
     </RelativeLayout>
 
-    <TextView
-            android:id="@+id/courseNameTextView"
+    <RelativeLayout
+            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:text="Mobile Datenbanksysteme"
-            android:textColor="@android:color/primary_text_light"
-            android:textSize="16sp"
-            />
+            android:layout_height="wrap_content">
 
-    <ImageView
-            android:id="@+id/roomIconImageView"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/location_directions"
-            android:layout_marginLeft="27dp"
-            android:layout_below="@id/courseNameTextView"
-    />
+        <TextView
+                android:id="@+id/courseNameTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:text="Mobile Datenbanksysteme"
+                android:textColor="@android:color/primary_text_light"
+                android:textSize="16sp"
+                />
 
-    <TextView android:id="@+id/courseRoomTextView"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_below="@+id/courseNameTextView"
-              android:layout_toRightOf="@+id/roomIconImageView"
-              android:layout_marginLeft="3dp"
-              android:layout_alignBottom="@+id/roomIconImageView"
-              android:gravity="center_vertical"
-              android:text="3.108"
-              android:textColor="@android:color/secondary_text_light"
-              android:textSize="12sp"
-            />
+        <ImageView
+                android:id="@+id/roomIconImageView"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/location_directions"
+                android:layout_marginLeft="27dp"
+                android:layout_below="@id/courseNameTextView"
+                />
 
-    <ImageView
-            android:id="@+id/timespanIconImageView"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/device_access_time"
-            android:layout_below="@id/courseNameTextView"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@+id/courseRoomTextView"
-            />
+        <TextView android:id="@+id/courseRoomTextView"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_below="@+id/courseNameTextView"
+                  android:layout_toRightOf="@+id/roomIconImageView"
+                  android:layout_marginLeft="3dp"
+                  android:layout_alignBottom="@+id/roomIconImageView"
+                  android:gravity="center_vertical"
+                  android:text="3.108"
+                  android:textColor="@android:color/secondary_text_light"
+                  android:textSize="12sp"
+                />
 
-    <TextView
-            android:id="@+id/courseTimespanTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/courseRoomTextView"
-            android:layout_toRightOf="@+id/timespanIconImageView"
-            android:layout_marginLeft="3dp"
-            android:text="12:00 - 14:00"
-            android:textColor="@android:color/secondary_text_light"
-            android:textSize="12sp"
-            />
+        <ImageView
+                android:id="@+id/timespanIconImageView"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/device_access_time"
+                android:layout_below="@id/courseNameTextView"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/courseRoomTextView"
+                />
 
-    <ImageView
-            android:id="@+id/lecturerIconImageView"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/social_person"
-            android:layout_below="@id/courseNameTextView"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@+id/courseTimespanTextView"
-            />
+        <TextView
+                android:id="@+id/courseTimespanTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/courseRoomTextView"
+                android:layout_toRightOf="@+id/timespanIconImageView"
+                android:layout_marginLeft="3dp"
+                android:text="12:00 - 14:00"
+                android:textColor="@android:color/secondary_text_light"
+                android:textSize="12sp"
+                />
 
-    <TextView
-            android:id="@+id/courseLecturerTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/courseRoomTextView"
-            android:layout_toRightOf="@+id/lecturerIconImageView"
-            android:layout_marginLeft="3dp"
-            android:text="Victor"
-            android:textColor="@android:color/secondary_text_light"
-            android:textSize="12sp"
-            />
+        <ImageView
+                android:id="@+id/lecturerIconImageView"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/social_person"
+                android:layout_below="@id/courseNameTextView"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/courseTimespanTextView"
+                />
 
+        <TextView
+                android:id="@+id/courseLecturerTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/courseRoomTextView"
+                android:layout_toRightOf="@+id/lecturerIconImageView"
+                android:layout_marginLeft="3dp"
+                android:text="Victor"
+                android:textColor="@android:color/secondary_text_light"
+                android:textSize="12sp"
+                />
+    </RelativeLayout>
 </RelativeLayout>
+
