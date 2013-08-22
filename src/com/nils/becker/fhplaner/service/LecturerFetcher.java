@@ -54,14 +54,14 @@ public class LecturerFetcher implements Fetcher {
 
         ContentValues content = new ContentValues();
         for(Lecturer l : lecturers) {
-            content.put(ScheduleDBA.KEY_DOZENTKUERZEL, l.getDozentkuerzel());
-            content.put(ScheduleDBA.KEY_FACHBEREICH, l.getFb_nr());
-            content.put(ScheduleDBA.KEY_VORNAME, l.getVorname());
-            content.put(ScheduleDBA.KEY_NACHNAME, l.getNachname());
-            content.put(ScheduleDBA.KEY_ANREDE, l.getAnrede());
-            content.put(ScheduleDBA.KEY_TITEL, l.getTitel());
-            content.put(ScheduleDBA.KEY_FUNKTION, l.getFunktion());
-            content.put(ScheduleDBA.KEY_TEL, l.getTel_intern());
+            content.put(ScheduleDBA.KEY_ABBREVIATION, l.getDozentkuerzel());
+            content.put(ScheduleDBA.KEY_FACULTY, l.getFb_nr());
+            content.put(ScheduleDBA.KEY_FORENAME, l.getVorname());
+            content.put(ScheduleDBA.KEY_SURNAME, l.getNachname());
+            content.put(ScheduleDBA.KEY_FORM, l.getAnrede());
+            content.put(ScheduleDBA.KEY_TITLE, l.getTitel());
+            content.put(ScheduleDBA.KEY_FUNCTION, l.getFunktion());
+            content.put(ScheduleDBA.KEY_PHONE, l.getTel_intern());
             content.put(ScheduleDBA.KEY_EMAIL, l.getEmail());
             content.put(ScheduleDBA.KEY_HOMEPAGE, l.getHomepage());
             db.insert(ScheduleDBA.LECTURER_TABLE_NAME, null, content);

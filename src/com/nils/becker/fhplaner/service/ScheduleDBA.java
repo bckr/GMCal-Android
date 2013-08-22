@@ -19,25 +19,25 @@ public class ScheduleDBA extends SQLiteOpenHelper {
     public static final String KEY_START = "start";
     public static final String KEY_END = "end";
     public static final String KEY_ROOM = "room";
+
+    public static final String KEY_FACULTY = "faculty";
+    public static final String KEY_FORENAME = "forename";
+    public static final String KEY_SURNAME = "surname";
+    public static final String KEY_FORM = "form";
+    public static final String KEY_TITLE = "title";
+    public static final String KEY_FUNCTION = "function";
+    public static final String KEY_PHONE = "phone";
+    public static final String KEY_EMAIL = "email";
+    public static final String KEY_HOMEPAGE = "homepage";
+
     public static final String COURSE_TABLE_NAME = "Course";
+    public static final String LECTURER_TABLE_NAME = "Lecturer";
 
     private static final String CREATE_COURSE_TABLE_STRING = "CREATE TABLE " + COURSE_TABLE_NAME + " ( _id INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_ABBREVIATION + " TEXT NOT NULL, " + KEY_NAME + " TEXT, " + KEY_TYPE + " TEXT, " + KEY_LECTURER_SHORT + " TEXT, " + KEY_DAY + " INTEGER, " + KEY_START + " INTEGER, " + KEY_END + " INTEGER, " + KEY_ROOM + " INTEGER);";
 
-    public static final String KEY_DOZENTKUERZEL = "dozentkuerzel";
-    public static final String KEY_FACHBEREICH = "fb_nr";
-    public static final String KEY_VORNAME = "vorname";
-    public static final String KEY_NACHNAME = "nachname";
-    public static final String KEY_ANREDE = "anrede";
-    public static final String KEY_TITEL = "titel";
-    public static final String KEY_FUNKTION = "funktion";
-    public static final String KEY_TEL = "tel_intern";
-    public static final String KEY_EMAIL = "email";
-    public static final String KEY_HOMEPAGE = "homepage";
-    public static final String KEY_RAUM = "raum_kz";
 
-    public static final String LECTURER_TABLE_NAME = "Lecturer";
 
-    public static final String CREATE_LECTURER_TABLE_STRING = "CREATE TABLE " + LECTURER_TABLE_NAME + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_DOZENTKUERZEL + " TEXT, " + KEY_FACHBEREICH + " INTEGER, " + KEY_VORNAME + " TEXT, " + KEY_NACHNAME + " TEXT, " + KEY_ANREDE + " TEXT, " + KEY_TITEL + " TEXT, " + KEY_FUNKTION + " TEXT, " + KEY_TEL + " TEXT, " + KEY_EMAIL + " TEXT, " + KEY_HOMEPAGE + " TEXT, " + KEY_RAUM + " INTEGER );";
+    public static final String CREATE_LECTURER_TABLE_STRING = "CREATE TABLE " + LECTURER_TABLE_NAME + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_ABBREVIATION + " TEXT, " + KEY_FACULTY + " INTEGER, " + KEY_FORENAME + " TEXT, " + KEY_SURNAME + " TEXT, " + KEY_FORM + " TEXT, " + KEY_TITLE + " TEXT, " + KEY_FUNCTION + " TEXT, " + KEY_PHONE + " TEXT, " + KEY_EMAIL + " TEXT, " + KEY_HOMEPAGE + " TEXT, " + KEY_ROOM + " INTEGER );";
 
 
     public ScheduleDBA(Context context) {
