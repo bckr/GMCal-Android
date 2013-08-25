@@ -30,8 +30,10 @@ public class CourseService implements Serializable {
         courseTypeColors = Collections.unmodifiableMap(map);
     }
 
+    public static final int DEFAULT_COLOR = Color.WHITE;
+
     public static int colorForCourseType(String type) {
-        return courseTypeColors.get(type) == null ? Color.WHITE : courseTypeColors.get(type);
+        return courseTypeColors.get(type) == null ? DEFAULT_COLOR : courseTypeColors.get(type);
     }
 
     public static String keyForCourseName(String name) {
