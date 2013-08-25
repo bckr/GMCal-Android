@@ -49,8 +49,10 @@ public class CourseService implements Serializable {
     }
 
     public static String getFormattedTimeSpan(int start, int end) {
-        if (start > 1) {
+        if (start >= 3) {
             return Integer.toString(start + 7) + ":00 - " + Integer.toString(end + 7) + ":00";
+        } else if (start > 1 && start < 3) {
+            return "0" + Integer.toString(start + 7) + ":00 - " + Integer.toString(end + 7) + ":00";
         } else {
             return "08:30 - " + Integer.toString(end + 7) + ":00";
         }
