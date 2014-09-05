@@ -35,6 +35,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         if (s.equals("pref_semester") || s.equals("pref_branch")) {
             String semester = sharedPreferences.getString("pref_semester", "1. Semester");
             String branch = sharedPreferences.getString("pref_branch", "Wirtschaftsinformatik");
+            /* TODO Deploy API (https://github.com/bckr/GMCal-API) to production server, as this backend does not work anymore */
             String newRessourceUrl = "http://nils-becker.com/fhg/schedule/student/20/" + CourseService.keyForCourseName(branch) + "/" + semester.substring(0, 1) + "/";
             sharedPreferences.edit().putString("ressourceURL", newRessourceUrl).commit();
 

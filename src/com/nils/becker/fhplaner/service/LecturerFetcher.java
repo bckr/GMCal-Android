@@ -16,6 +16,7 @@ import java.util.ArrayList;
  */
 public class LecturerFetcher implements Fetcher {
 
+    /* TODO Deploy API (https://github.com/bckr/GMCal-API) to production server, as this backend does not work anymore */
     private static final String REQUEST_URI = "http://nils-becker.com/fhg/lecturers";
     private final Context context;
 
