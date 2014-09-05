@@ -26,7 +26,6 @@ public class FetchCoursesTask extends AsyncTask<String, Void, JSONArray> {
 	
 	@Override
 	protected JSONArray doInBackground(String... params) {
-		Log.d("debug", params[0]);
 		HttpClient httpclient = new DefaultHttpClient();
 		// Prepare a request object
 		HttpGet httpget = new HttpGet(params[0]);

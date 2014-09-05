@@ -82,6 +82,8 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         db.setTransactionSuccessful();
         db.endTransaction();
         SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
+
+        /* FIXME: This feels very wrong! */
         sharedPreferences.edit().putBoolean("dbupdate", !sharedPreferences.getBoolean("dbupdate", false)).commit();
     }
 }
