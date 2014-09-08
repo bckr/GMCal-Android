@@ -1,6 +1,6 @@
 ## GM Calendar
 
-[![Build Status](https://travis-ci.org/stetro/GMCal-Android.svg?branch=master)](https://travis-ci.org/stetro/GMCal-Android)
+[![Build Status](https://travis-ci.org/bckr/GMCal-Android.svg?branch=master)](https://travis-ci.org/stetro/GMCal-Android)
 
 A mobile calendar for the [Cologne University of Applied Sciences](https://www.fh-koeln.de/en/homepage_26.php).
 
