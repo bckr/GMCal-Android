@@ -7,5 +7,6 @@ build/
 gen/
 
 *.iml
+.classpath
 
 local.properties
