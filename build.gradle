@@ -15,14 +15,10 @@ repositories {
     mavenCentral()
 }
 
-
-
-
 dependencies {
-    compile 'org.androidannotations:androidannotations-api:3.0'
+    compile 'com.android.support:support-v4:20.0.0'
     compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
 }
-
 
 android {
     compileSdkVersion 19
