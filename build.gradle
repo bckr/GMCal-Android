@@ -1,0 +1,41 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.12.2'
+        classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
+    }
+}
+apply plugin: 'android-sdk-manager'
+apply plugin: 'com.android.application'
+apply plugin: 'idea'
+
+repositories {
+    mavenCentral()
+}
+
+
+
+
+dependencies {
+    compile 'org.androidannotations:androidannotations-api:3.0'
+    compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
+}
+
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion '19.1.0'
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 17
+    }
+    buildTypes {
+        release {
+            runProguard false
+            proguardFile getDefaultProguardFile('proguard-project.txt')
+        }
+    }
+}
