@@ -1,0 +1,5 @@
+before_install:
+        - sudo apt-get update -qq
+        - sudo apt-get install -qq lib32stdc++6 lib32z1 lib32z1-dev
+
+language: java
