@@ -1,6 +1,4 @@
 before_install:
-        - sudo dpkg --add-architecture i386
-        - sudo apt-get update -qq
-        - sudo apt-get install -qq libncurses5:i386 libstdc++6:i386 zlib1g:i386
+        - sudo apt-get install -qq lib32stdc++6 lib32z1 lib32z1-dev
 
 language: java
