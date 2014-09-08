@@ -33,4 +33,7 @@ android {
             proguardFile getDefaultProguardFile('proguard-project.txt')
         }
     }
+    lintOptions {
+        abortOnError false
+    }
 }
